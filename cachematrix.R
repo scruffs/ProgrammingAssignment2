@@ -1,15 +1,34 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This pair of functions work to compite the inverse of a square matrix. Once
+## computed these values will be stored in the cache to prevent recalculation.
 
-## Write a short comment describing this function
 
+## Create a new list of required values for cacheMatrix. getinv is initialised
+## as NULL, to indicate the inverse has not yet been calculated.
 makeCacheMatrix <- function(x = matrix()) {
-
+            inv_mat <- NULL
+            set <- function(y) {
+                  x <<- y
+                  inv_mat <<- NULL
+            }
+            get <- function() x
+            setinv <- function(invert) inv_mat <<- invert
+            getinv <- function() inv_mat
+            list(set = set, get = get,
+                 setinv = setinv,
+                 getinv = getinv)
 }
 
 
-## Write a short comment describing this function
-
+## Loads in a makeCacheMatrix list and checks if inv_mat is cached.
+## If already present it returns this value, if not it will be calculated.
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+      inv_mat <- x$getinv()
+      if(!is.null(inv_mat)) {
+            message("getting cached data")
+            return(inv_mat)
+      }
+      data <- x$get()
+      inv_mat <- solve(data, ...)
+      x$setinv(inv_mat)
+      inv_mat
 }
